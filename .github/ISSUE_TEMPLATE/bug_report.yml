@@ -1,0 +1,60 @@
+name: Bug report
+description: 报告一个问题，帮我们把它修好
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提 issue 前请先看一遍 [常见问题](https://github.com/KeefenAn/SmsMail/blob/main/docs/faq.md)。
+        **请不要粘贴真实的短信内容、手机号或邮箱授权码**，用 `106xxxx` / `***` 代替。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 越具体越好，包括你期望的结果。
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 手机端配置 Webhook 指向 ...
+        2. 发送一条短信 ...
+        3. 看到 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: |
+        用 `journalctl -u smsmail -n 50 --no-pager` 或 `docker logs smsmail` 取，
+        记得把令牌、邮箱地址打码。
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: deploy
+    attributes:
+      label: 部署方式
+      options:
+        - 一键安装脚本（systemd）
+        - Docker / docker compose
+        - 手动 node server.js
+        - 本地开发环境
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本与运行环境
+      description: 版本号（`package.json` 里的 version）、Node 版本、操作系统
+      placeholder: v1.0.0 / Node 22.14 / Debian 12
+    validations:
+      required: true
