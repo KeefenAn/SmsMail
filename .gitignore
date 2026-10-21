@@ -1,0 +1,20 @@
+# 依赖
+node_modules/
+
+# 运行时产物（含短信正文与邮箱授权码，绝对不要提交）
+data/
+dev/
+config.json
+*.log
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 打包产物
+*.zip
+*.tar.gz
+coverage/
