@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0e1117" />
+    <title>短信邮差 · 备用机短信转发</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- 登录 -->
+    <div id="login" class="login" hidden>
+      <form class="login-card" id="loginForm">
+        <div class="logo-lg">✉</div>
+        <h1>短信邮差</h1>
+        <p class="muted">输入服务端 <code>config.json</code> 里的 <code>adminToken</code></p>
+        <input id="loginToken" type="password" placeholder="访问令牌" autocomplete="current-password" />
+        <button class="btn primary" type="submit">进入收件箱</button>
+        <p class="err" id="loginErr" hidden></p>
+      </form>
+    </div>
+
+    <!-- 主体 -->
+    <div id="app" class="app" hidden>
+      <header class="bar">
+        <div class="brand">
+          <span class="logo">✉</span>
+          <div class="brand-text">
+            <div class="name">短信邮差</div>
+            <div class="sub"><i id="live" class="dot"></i><span id="statusText">连接中…</span></div>
+          </div>
+        </div>
+        <div class="tools">
+          <label class="search">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path fill="none" stroke="currentColor" stroke-width="2" d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm10 2-4.35-4.35" />
+            </svg>
+            <input id="search" type="search" placeholder="搜索号码或内容" autocomplete="off" />
+          </label>
+          <button id="btnSettings" class="btn ghost icon" title="设置" aria-label="设置">⚙</button>
+        </div>
+      </header>
+
+      <div class="stats" id="stats"></div>
+
+      <main class="layout">
+        <section class="list-pane">
+          <ul id="list" class="list"></ul>
+          <div id="empty" class="empty" hidden></div>
+        </section>
+
+        <aside id="detail" class="detail-pane" hidden>
+          <div class="detail-head">
+            <div>
+              <div class="detail-from" id="dFrom"></div>
+              <div class="detail-meta" id="dMeta"></div>
+            </div>
+            <button class="btn ghost icon" id="dClose" aria-label="关闭">✕</button>
+          </div>
+          <div class="detail-body">
+            <div id="dCode" class="code-card" hidden>
+              <div class="code-label">验证码</div>
+              <div class="code-value" id="dCodeVal"></div>
+              <button class="btn small primary" id="dCopyCode">复制</button>
+            </div>
+            <pre id="dText" class="sms-text"></pre>
+            <div class="detail-actions">
+              <button class="btn ghost" id="dCopy">复制原文</button>
+              <button class="btn ghost" id="dResend">重发邮件</button>
+              <button class="btn danger-ghost" id="dDelete">删除</button>
+            </div>
+            <div class="mail-status" id="dMail"></div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <!-- 设置 -->
+    <div id="settings" class="sheet-wrap" hidden>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h2>设置</h2>
+          <button class="btn ghost icon" id="sClose" aria-label="关闭">✕</button>
+        </div>
+        <div class="sheet-body">
+          <div class="card hook-card">
+            <div class="card-title">① 手机端推送地址</div>
+            <p class="muted small">
+              把这个地址填到手机 App <b>SmsForwarder</b> 的「WebServer」，webParams 留空即可。
+            </p>
+            <div class="copy-row">
+              <input id="hookUrl" readonly />
+              <button class="btn ghost" id="copyHook">复制</button>
+            </div>
+            <div class="row-between">
+              <span class="muted small" id="hookNote"></span>
+              <button class="btn ghost small" id="rotateHook">重新生成令牌</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">② 发信邮箱（SMTP）</div>
+            <div class="grid2">
+              <label>SMTP 服务器<input id="smtpHost" placeholder="smtp.qq.com" /></label>
+              <label>端口<input id="smtpPort" type="number" placeholder="465" /></label>
+              <label>账号<input id="smtpUser" placeholder="you@qq.com" /></label>
+              <label>授权码<input id="smtpPass" type="password" placeholder="留空表示不修改" /></label>
+              <label>发件人名称<input id="smtpFromName" placeholder="短信邮差" /></label>
+              <label>发件地址<input id="smtpFromAddr" placeholder="默认同账号" /></label>
+            </div>
+            <label>收件邮箱（多个用逗号或换行分隔）
+              <textarea id="smtpTo" rows="2" placeholder="me@qq.com"></textarea>
+            </label>
+            <div class="row-between">
+              <button class="btn ghost" id="btnTest">发一封测试邮件</button>
+              <span class="muted small" id="testResult"></span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">③ 过滤与模板</div>
+            <label>邮件主题模板<span class="muted small">可用 [from] [code] [time] [device]</span>
+              <input id="subjectTpl" placeholder="【短信】[from][code]" />
+            </label>
+            <label>直接丢弃的关键词<span class="muted small">命中就不转发，比如推广短信</span>
+              <input id="dropKeywords" placeholder="退订, 回复TD" /></label>
+            <div class="grid2">
+              <label>只转发这些号码<span class="muted small">留空=全部</span>
+                <input id="allowSenders" placeholder="10690001, 95588" /></label>
+              <label>屏蔽这些号码
+                <input id="denySenders" placeholder="106" /></label>
+            </div>
+          </div>
+
+          <div class="card muted-card">
+            <div class="card-title">④ 安全</div>
+            <p class="muted small">
+              网页登录令牌：<code id="adminTokenShow"></code>
+              <button class="btn ghost small" id="rotateAdmin">重新生成</button>
+            </p>
+            <p class="muted small">建议全站挂 HTTPS，并定期更换上面的两个令牌。</p>
+          </div>
+        </div>
+        <div class="sheet-foot">
+          <span class="muted small" id="saveHint"></span>
+          <button class="btn primary" id="btnSave">保存设置</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
