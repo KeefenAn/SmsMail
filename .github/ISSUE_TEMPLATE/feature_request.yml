@@ -1,0 +1,26 @@
+name: Feature request
+description: 想要一个新功能或者改进
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你遇到的是什么场景
+      description: 先说问题，再说方案，避免「能不能加个 XX」这类没法判断的需求。
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 你希望的方案
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你试过的替代方案
+      description: 比如用别的 App、别的转发方式，为什么不够用。
+    validations:
+      required: false
