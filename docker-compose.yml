@@ -1,0 +1,16 @@
+services:
+  smsmail:
+    build: .
+    image: sms-mailer:latest
+    container_name: smsmail
+    restart: unless-stopped
+    ports:
+      - '8787:8787'
+    volumes:
+      # 配置、令牌和短信存档都在这里，注意备份
+      - ./data:/data
+    environment:
+      TZ: Asia/Shanghai
+      SMSMAIL_CONFIG: /data/config.json
+      SMSMAIL_DATA: /data
+      # 反向代理在同一台机器上时，改成 127.0.0.1:8787:8787，只让 Nginx 访问
