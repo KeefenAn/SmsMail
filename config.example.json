@@ -1,0 +1,36 @@
+{
+  "port": 8787,
+  "host": "0.0.0.0",
+
+  "publicUrl": "https://sms.你的域名.com",
+
+  "adminToken": "改成你自己的网页登录令牌-至少32位随机串",
+  "hookToken": "改成你自己的手机推送令牌-至少32位随机串",
+  "hookSecret": "",
+  "strictSign": false,
+
+  "dedupeSeconds": 30,
+  "retryMax": 6,
+  "maxMessages": 5000,
+  "timezone": "Asia/Shanghai",
+
+  "subject": "【短信】[from][code]",
+
+  "smtp": {
+    "host": "smtp.qq.com",
+    "port": 465,
+    "secure": true,
+    "starttls": "auto",
+    "user": "你的邮箱@qq.com",
+    "pass": "邮箱授权码（不是登录密码）",
+    "fromName": "短信邮差",
+    "fromAddress": "你的邮箱@qq.com",
+    "to": ["接收通知的邮箱@qq.com"]
+  },
+
+  "filters": {
+    "dropKeywords": ["退订", "回复TD"],
+    "allowSenders": [],
+    "denySenders": []
+  }
+}
