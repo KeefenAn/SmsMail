@@ -30,9 +30,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "test:single": "node --test --test-isolation=none \"test/*.test.js\"",
-    "test:watch": "node --test --watch test/",
+    "test:watch": "node --test --watch test/*.test.js",
     "mock-smtp": "node test/support/mock-smtp.js 2525",
     "check": "node scripts/check-syntax.js"
   },
