@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 常见问题
+    url: https://github.com/KeefenAn/SmsMail/blob/main/docs/faq.md
+    about: 收不到邮件、连不上服务器、手机后台被杀等问题，先看这里
+  - name: 讨论区
+    url: https://github.com/KeefenAn/SmsMail/discussions
+    about: 用法交流、想法讨论请走讨论区，issue 留给明确的 bug 和需求
