@@ -1,0 +1,12 @@
+node_modules
+data
+dev
+.git
+.github
+docs
+test
+scripts
+deploy
+*.zip
+*.tar.gz
+*.log
