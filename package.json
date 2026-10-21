@@ -1,0 +1,50 @@
+{
+  "name": "sms-mailer",
+  "version": "1.0.0",
+  "description": "备用安卓机的短信自动转发到邮箱：Webhook 接入、SMTP 发信、失败重试、网页收件箱",
+  "keywords": [
+    "sms",
+    "sms-forwarder",
+    "email",
+    "smtp",
+    "android",
+    "self-hosted",
+    "webhook",
+    "notification"
+  ],
+  "homepage": "https://github.com/KeefenAn/SmsMail#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeefenAn/SmsMail.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KeefenAn/SmsMail/issues"
+  },
+  "author": "SmsMail contributors",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/",
+    "test:single": "node --test --test-isolation=none \"test/*.test.js\"",
+    "test:watch": "node --test --watch test/",
+    "mock-smtp": "node test/support/mock-smtp.js 2525",
+    "check": "node scripts/check-syntax.js"
+  },
+  "files": [
+    "server.js",
+    "lib/",
+    "public/",
+    "deploy/",
+    "config.example.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}
